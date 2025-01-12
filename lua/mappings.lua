@@ -7,7 +7,7 @@ keymap.set("n", "<leader>xx", ":bufdo bd<CR>", { desc = 'close all buffers' })
 --save
 -- keymap.set('n', "e", ":w<CR>", { desc = "save current buffer" })
 keymap.set('n', "e", ":wa<CR>", { desc = "save all buffer" })
-keymap.set("n", "<leader>E", ":wqa<CR>", { desc = "save all buffer and close neovim" })
+keymap.set("n", "Q", ":wqa<CR>", { desc = "save all buffer and close neovim" })
 --searching files and word using grep
 keymap.set('n', '<leader><leader>', require('telescope.builtin').find_files, { desc = 'searching file' })
 keymap.set('n', 'sg', require('telescope.builtin').current_buffer_fuzzy_find, { desc = 'search in current buffer' })
