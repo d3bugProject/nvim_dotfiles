@@ -2,19 +2,21 @@ require "nvchad.mappings"
 local keymap = vim.keymap
 ---------------- tabs
 --panes controle
-keymap.set("n", "<leader>x", ":bd<CR>", { desc = 'close buffer' })
-keymap.set("n", "<leader>xx", ":bufdo bd<CR>", { desc = 'close all buffers' })
+keymap.set("n", "x", ":bd<CR>", { desc = 'close buffer' })
+keymap.set("n", "xx", ":bufdo bd<CR>", { desc = 'close all buffers' })
+keymap.set("n", "X", ":close<CR>", { desc = 'close all buffers' })
+
 --save
 -- keymap.set('n', "e", ":w<CR>", { desc = "save current buffer" })
 keymap.set('n', "e", ":wa<CR>", { desc = "save all buffer" })
 keymap.set("n", "Q", ":wqa<CR>", { desc = "save all buffer and close neovim" })
 --searching files and word using grep
 keymap.set('n', '<leader><leader>', require('telescope.builtin').find_files, { desc = 'searching file' })
-keymap.set('n', 'sg', require('telescope.builtin').current_buffer_fuzzy_find, { desc = 'search in current buffer' })
-keymap.set('n', 'sgg', require('telescope.builtin').live_grep, { desc = 'searching word by grep' })
-keymap.set('n', 'sr', require('telescope.builtin').oldfiles, { desc = 'find recently opened files' })
-keymap.set('n', 'sb', require('telescope.builtin').buffers, { desc = 'find opened buffer' })
----------------- telescope
+keymap.set('n', '<leader>g', require('telescope.builtin').current_buffer_fuzzy_find, { desc = 'search in current buffer' })
+keymap.set('n', '<leader>gg', require('telescope.builtin').live_grep, { desc = 'searching word by grep' })
+-- keymap.set('n', 'sr', require('telescope.builtin').oldfiles, { desc = 'find recently opened files' })
+-- keymap.set('n', 'sb', require('telescope.builtin').buffers, { desc = 'find opened buffer' })
+--------------- telescope
 keymap.set('n', 't', '<cmd>:NvimTreeOpen<CR>', { desc = "open nvim-tree" })
 keymap.set('n', 'E', '<cmd>:NvimTreeClose<CR>', { desc = "close nvim-tree" })
 ---------------- coding
@@ -27,7 +29,7 @@ keymap.set('n', '<leader>cs', ':lua require("cmp").setup.buffer { enabled = true
   { desc = "enable all completion" })
 --formating
 keymap.set('n', "f", "<cmd>lua vim.lsp.buf.format{async=true}<CR>", { desc = "format document" })
-keymap.set("n", "<S-a>", "gg<S-v>G")
+keymap.set("n", "<C-a>", "gg<S-v>G")
 --turn comment
 keymap.set('n', 'gc', '<cmd>lua require("Comment.api").toggle.linewise.current()<CR>',
   { desc = "turn the line into comment" })
