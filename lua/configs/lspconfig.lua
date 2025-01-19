@@ -37,7 +37,7 @@ cmp.setup {
     end,
   },
   mapping = cmp.mapping.preset.insert {
-    ['1'] = cmp.mapping.close {},
+    ['~'] = cmp.mapping.close {},
     ['<C-j>'] = cmp.mapping.scroll_docs(-4),
     ['<C-k>'] = cmp.mapping.scroll_docs(4),
     ['<C-b>'] = cmp.mapping.complete {},
