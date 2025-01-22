@@ -1,4 +1,9 @@
 return {
+  --codeium
+  {
+    'Exafunction/codeium.vim',
+    event = 'BufEnter'
+  },
   "xiyaowong/transparent.nvim",
   "nvimtools/none-ls.nvim",
   "jose-elias-alvarez/null-ls.nvim",

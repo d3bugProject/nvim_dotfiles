@@ -30,6 +30,8 @@ keymap.set('n', '<leader>cs', ':lua require("cmp").setup.buffer { enabled = true
 --formating
 keymap.set('n', "f", "<cmd>lua vim.lsp.buf.format{async=true}<CR>", { desc = "format document" })
 keymap.set("n", "<C-a>", "gg<S-v>G")
+keymap.set('n', '<leader>k', ':m .-2<CR>', { noremap = true })
+keymap.set('n', '<leader>j', ':m .+1<CR>', { noremap = true })
 --turn comment
 keymap.set('n', 'gc', '<cmd>lua require("Comment.api").toggle.linewise.current()<CR>',
   { desc = "turn the line into comment" })
