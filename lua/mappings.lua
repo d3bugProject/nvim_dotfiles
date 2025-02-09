@@ -27,6 +27,11 @@ keymap.set('n', '<leader>cp', ':lua require("cmp").setup.buffer { enabled = fals
 })
 keymap.set('n', '<leader>cs', ':lua require("cmp").setup.buffer { enabled = true }<CR>',
   { desc = "enable all completion" })
+-- Move selected line/block up
+vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { noremap = true, silent = true })
+
+-- Move selected line/block down
+vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { noremap = true, silent = true })
 --formating
 keymap.set('n', "f", "<cmd>lua vim.lsp.buf.format{async=true}<CR>", { desc = "format document" })
 keymap.set("n", "<C-a>", "gg<S-v>G")
@@ -78,7 +83,8 @@ local function on_attach(bufnr)
   keymap.set('n', 'd', api.fs.remove, opts('Delete'))
   keymap.set('n', 'D', api.fs.trash, opts('Trash'))
   keymap.set('n', 'E', api.tree.expand_all, opts('Expand All'))
-  keymap.set('n', 'e', api.fs.rename_basename, opts('Rename: Basename'))
+  -- keymap.set('n', 'e', api.fs.rename_basename, opts('Rename: Basename'))
+  keymap.set('n', 'e', ":NvimTreeClose<CR>", opts('Close nvim-tree'))
   keymap.set('n', ']e', api.node.navigate.diagnostics.next, opts('Next Diagnostic'))
   keymap.set('n', '[e', api.node.navigate.diagnostics.prev, opts('Prev Diagnostic'))
   keymap.set('n', 'F', api.live_filter.clear, opts('Clean Filter'))

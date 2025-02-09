@@ -11,7 +11,22 @@ return {
   {
     "stevearc/conform.nvim",
     -- event = 'BufWritePre', -- uncomment for format on save
-    opts = require "configs.conform",
+    optional = true,
+    opts = {
+      formatters_by_ft = {
+        ["typescript"] = { "eslint_d" },
+        ["javascript"] = { "eslint_d" },
+      },
+      require "configs.conform",
+    },
+  },
+  {
+    "williamboman/mason.nvim",
+    opts = {
+      ensure_installed = {
+        "eslint_d",
+      },
+    },
   },
   {
     "neovim/nvim-lspconfig",
