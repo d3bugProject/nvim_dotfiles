@@ -1,8 +1,22 @@
 return {
   --codeium
   {
-    'Exafunction/codeium.vim',
-    event = 'BufEnter'
+    "Exafunction/codeium.vim",
+    lazy = false,
+    config = function()
+      vim.keymap.set("i", "<tab>", function()
+        return vim.fn["codeium#Accept"]()
+      end, { expr = true })
+      vim.keymap.set("i", "<c-;>", function()
+        return vim.fn["codeium#CycleCompletions"](1)
+      end, { expr = true })
+      vim.keymap.set("i", "<c-,>", function()
+        return vim.fn["codeium#CycleCompletions"](-1)
+      end, { expr = true })
+      vim.keymap.set("i", "<c-x>", function()
+        return vim.fn["codeium#Clear"]()
+      end, { expr = true })
+    end,
   },
   "xiyaowong/transparent.nvim",
   "nvimtools/none-ls.nvim",
@@ -50,6 +64,9 @@ return {
     -- Autocompletion
     'hrsh7th/nvim-cmp',
     dependencies = { 'hrsh7th/cmp-nvim-lsp', 'saadparwaiz1/cmp_luasnip' },
+    keys = {
+      { "<tab>", mode = { "i" }, false },
+    },
   },
   { 'hrsh7th/cmp-buffer' },
   { 'hrsh7th/cmp-path' },
