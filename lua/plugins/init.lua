@@ -1,24 +1,59 @@
 return {
-  --codeium
+  -- --codeium
+  -- {
+  --   "Exafunction/codeium.vim",
+  --   lazy = false,
+  --   config = function()
+  --     vim.keymap.set("i", "<tab>", function()
+  --       return vim.fn["codeium#Accept"]()
+  --     end, { expr = true })
+  --     vim.keymap.set("i", "<c-;>", function()
+  --       return vim.fn["codeium#CycleCompletions"](1)
+  --     end, { expr = true })
+  --     vim.keymap.set("i", "<c-,>", function()
+  --       return vim.fn["codeium#CycleCompletions"](-1)
+  --     end, { expr = true })
+  --     vim.keymap.set("i", "<c-x>", function()
+  --       return vim.fn["codeium#Clear"]()
+  --     end, { expr = true })
+  --   end,
+  -- },
   {
-    "Exafunction/codeium.vim",
+    "github/copilot.vim",
     lazy = false,
     config = function()
-      vim.keymap.set("i", "<tab>", function()
-        return vim.fn["codeium#Accept"]()
-      end, { expr = true })
-      vim.keymap.set("i", "<c-;>", function()
-        return vim.fn["codeium#CycleCompletions"](1)
-      end, { expr = true })
-      vim.keymap.set("i", "<c-,>", function()
-        return vim.fn["codeium#CycleCompletions"](-1)
-      end, { expr = true })
-      vim.keymap.set("i", "<c-x>", function()
-        return vim.fn["codeium#Clear"]()
-      end, { expr = true })
+      -- Basic configuration
+      vim.g.copilot_no_tab_map = true
+      vim.g.copilot_assume_mapped = true
+      vim.g.copilot_tab_fallback = ""
+      -- Use <C-j> for accepting suggestions
+      vim.api.nvim_set_keymap("i", "<tab>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
+
+      -- Additional key mappings if needed
+      -- vim.api.nvim_set_keymap("i", "<C-]>", 'copilot#Next()', { silent = true, expr = true })
+      -- vim.api.nvim_set_keymap("i", "<C-[>", 'copilot#Previous()', { silent = true, expr = true })
     end,
   },
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    branch = "main",
+    lazy = false, -- Force load the plugin
+    dependencies = {
+      { "github/copilot.vim" },
+      { "nvim-lua/plenary.nvim" },
+      { "nvim-telescope/telescope.nvim" },
+    },
+    config = function()
+      require("CopilotChat").setup({
+        debug = true, -- Enable debug for troubleshooting
+      })
+      -- Keybindings
+      vim.keymap.set("n", "<leader>cc", "<cmd>CopilotChat<CR>")
+      vim.keymap.set("v", "<leader>cc", ":CopilotChatVisual<CR>")
+    end,
+  }, 
   "xiyaowong/transparent.nvim",
+
   "nvimtools/none-ls.nvim",
   "jose-elias-alvarez/null-ls.nvim",
   "aca/emmet-ls",
