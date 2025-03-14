@@ -41,6 +41,7 @@ cmp.setup {
   mapping = {
     -- Disable Tab for navigating suggestions
     ['<Tab>'] = cmp.mapping(function(fallback)
+      vim.api.nvim_feedkeys(vim.fn['copilot#Accept'](vim.api.nvim_replace_termcodes('<Tab>', true, true, true)), 'n', true)
       -- Do nothing when Tab is pressed
       fallback()  -- This will allow the Tab key to do nothing
     end, { 'i', 's' }),

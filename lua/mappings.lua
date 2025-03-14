@@ -1,52 +1,88 @@
 require "nvchad.mappings"
 local keymap = vim.keymap
----------------- tabs
---panes controle
-keymap.set("n", "x", ":bd<CR>", { desc = 'close buffer' })
-keymap.set("n", "xx", ":bufdo bd<CR>", { desc = 'close all buffers' })
-keymap.set("n", "X", ":close<CR>", { desc = 'close all buffers' })
 
---save
--- keymap.set('n', "e", ":w<CR>", { desc = "save current buffer" })
+--general
+--relaod neovimconfig
+keymap.set('n', '<leader>r', ':luafile %<CR>', { desc = 'reload neovim config' })
 keymap.set('n', "e", ":wa<CR>", { desc = "save all buffer" })
 keymap.set("n", "Q", ":wqa<CR>", { desc = "save all buffer and close neovim" })
---searching files and word using grep
-keymap.set('n', '<leader><leader>', require('telescope.builtin').find_files, { desc = 'searching file' })
-keymap.set('n', '<leader>g', require('telescope.builtin').current_buffer_fuzzy_find, { desc = 'search in current buffer' })
-keymap.set('n', '<leader>gg', require('telescope.builtin').live_grep, { desc = 'searching word by grep' })
--- keymap.set('n', 'sr', require('telescope.builtin').oldfiles, { desc = 'find recently opened files' })
--- keymap.set('n', 'sb', require('telescope.builtin').buffers, { desc = 'find opened buffer' })
---------------- telescope
-keymap.set('n', 't', '<cmd>:NvimTreeOpen<CR>', { desc = "open nvim-tree" })
-keymap.set('n', 'E', '<cmd>:NvimTreeClose<CR>', { desc = "close nvim-tree" })
----------------- coding
---desable autocompletion
 keymap.set('n', '<leader>cp', ':lua require("cmp").setup.buffer { enabled = false }<CR>', {
   desc =
   "desable all completion"
 })
 keymap.set('n', '<leader>cs', ':lua require("cmp").setup.buffer { enabled = true }<CR>',
   { desc = "enable all completion" })
+--tabs and panes----------------------------------------------------------------------------------------  -------------
+--tabs
+--  create new tab
+keymap.set('n', '<leader>tn', ':tabnew<CR>', { desc = 'create new tab' })
+--  close tab
+keymap.set('n', '<leader>tc', ':tabclose<CR>', { desc = 'close tab' })
+--  move to next tab
+keymap.set('n', '<leader><Right>', ':tabnext<CR>', { desc = 'move to next tab' })
+--split   panes
+-- split horizontal
+keymap.set('n', '<leader>hs', ':split<CR>', { noremap = true, silent = true, desc = 'split horizontal' })
+-- split vertical
+keymap.set('n', '<leader>vs', ':vsplit<CR>', { noremap = true, silent = true, desc = 'split vertical' })
+--focus panes
+--focus left
+keymap.set('n', 'fh', '<C-w>h', { desc = 'focus left' })
+--focus right
+keymap.set('n', 'fl', '<C-w>l', { desc = 'focus right' })
+--focus down
+keymap.set('n', 'fj', '<C-w>j', { desc = 'focus down' })
+--focus up
+keymap.set('n', 'fk', '<C-w>k', { desc = 'focus up' })
+--make term buffer
+keymap.set('n', '<leader>t', ':ToggleTerm direction=float<CR>', { silent = true })
+--close buffers
+keymap.set("n", "x", ":bd<CR>", { desc = 'close buffer' })
+keymap.set("n", "xx", ":bufdo bd<CR>", { desc = 'close all buffers' })
+keymap.set("n", "X", ":close<CR>", { desc = 'close all buffers' })
+----------------------------------------------------------------------------------  ------  ------------- --- ----------
+--copilot
+keymap.set("i", "<S-Tab>", "copilot#Next()", { expr = true, silent = true, noremap = true })
+keymap.set("n", "<leader>m", ":CopilotChat<CR>", { desc = "open copilot chat" })
+keymap.set("n","<leader>ze", ":CopilotChatExplain <CR>", { desc = "open copilot chat explain" })
+keymap.set("v","<leader>zr", ":CopilotChatReview <CR>", { desc = "open copilot chat review" })
+keymap.set("v","<leader>zf", ":CopilotChatFix <CR>", { desc = "open copilot chat fix" })
+keymap.set("v","<leader>zo", ":CopilotChatOptimize" , { desc = "open copilot chat optimize" })
+keymap.set("v","<leader>zd" , ":CopilotChatDocs <CR>", { desc = "open copilot chat debug" })
+keymap.set("n","<leader>zs", ":CopilotChatCommit <CR>", { desc = "open copilot chat show" })
+keymap.set("v","<leader>zq", ":CopilotChatQuit <CR>", { desc = "open copilot chat quit" })
+------------------------  ----------------------------------------------------------  ------  ------------- --- ----------
+--searching
+keymap.set('n', '<leader><leader>', require('telescope.builtin').find_files, { desc = 'searching file' })
+keymap.set('n', '<leader>g', require('telescope.builtin').current_buffer_fuzzy_find,
+  { desc = 'search in current buffer' })
+keymap.set('n', '<leader>gg', require('telescope.builtin').live_grep, { desc = 'searching word by grep' })
+-- keymap.set('n', 'sr', require('telescope.builtin').oldfiles, { desc = 'find recently opened files' })
+-- keymap.set('n', 'sb', require('telescope.builtin').buffers, { desc = 'find opened buffer' })
+--------------------- -------------------------------------------------------------  ------  ------------- --- ----------
+--coding
 -- Move selected line/block up
-vim.keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { noremap = true, silent = true })
-
+keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { noremap = true, silent = true })
 -- Move selected line/block down
-vim.keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { noremap = true, silent = true })
---formating
-keymap.set('n', "f", "<cmd>lua vim.lsp.buf.format{async=true}<CR>", { desc = "format document" })
+keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { noremap = true, silent = true })
+--format
+keymap.set('n', "ff", "<cmd>lua vim.lsp.buf.format{async=true}<CR>", { desc = "format document" })
+--selectall
 keymap.set("n", "<C-a>", "gg<S-v>G")
-keymap.set('n', '<leader>k', ':m .-2<CR>', { noremap = true })
-keymap.set('n', '<leader>j', ':m .+1<CR>', { noremap = true })
---turn comment
+--toggle comment
 keymap.set('n', 'gc', '<cmd>lua require("Comment.api").toggle.linewise.current()<CR>',
   { desc = "turn the line into comment" })
 keymap.set('v', 'gc', '<ESC><cmd>lua require("Comment.api").toggle.linewise(vim.fn.visualmode())<CR>',
   { desc = 'turn the block into comment' })
----------------- hop
-vim.api.nvim_set_keymap("n", "m", ":HopAnywhere<cr>",
+--hop plugins
+keymap.set("n", "m", ":HopAnywhere<cr>",
   { desc = "go directly to another character into the buffer", silent = true })
-vim.api.nvim_set_keymap("n", "mm", ":HopWord<cr>", { desc = "go directly to another word in the buffer", silent = true })
----------------- nvim-tree
+keymap.set("n", "mm", ":HopWord<cr>", { desc = "go directly to another word in the buffer", silent = true })
+
+
+----------------------------------- -----------------------------------------------  ------  ------------- --- ----------
+--tree
+keymap.set('n', 't', '<cmd>:NvimTreeToggle<CR>', { desc = "open nvim-tree" })
 -- See `:help telescope.builtin`
 local function on_attach(bufnr)
   local api = require('nvim-tree.api')
