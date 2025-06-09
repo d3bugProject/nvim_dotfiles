@@ -16,6 +16,8 @@ keymap.set('n', '<leader>cp', ':lua require("cmp").setup.buffer { enabled = fals
   { desc = "disable all completion" })
 keymap.set('n', '<leader>cs', ':lua require("cmp").setup.buffer { enabled = true }<CR>',
   { desc = "enable all completion" })
+keymap.set('v', '<C-c>', '"+y')
+keymap.set('n', '<C-v>', '"+p')
 
 -----------------------------------------------------------
 -- WINDOW MANAGEMENT
@@ -62,9 +64,10 @@ keymap.set('n', '<leader>g', require('telescope.builtin').current_buffer_fuzzy_f
 keymap.set('n', '<leader>gg', require('telescope.builtin').live_grep, { desc = 'searching word by grep' })
 
 -- Hop
-keymap.set("n", "m", ":HopPattern<cr>",
+keymap.set("n", "m", ":HopAnywhere<cr>", { desc = "go to any charactere in page", silent = true })
+keymap.set("n", "mm", ":HopPattern<cr>",
   { desc = "go directly to another character into the buffer", silent = true })
-keymap.set("n", "mm", ":HopWord<cr>", { desc = "go directly to another word in the buffer", silent = true })
+keymap.set("n", "mmm", ":HopWord<cr>", { desc = "go directly to another word in the buffer", silent = true })
 
 -----------------------------------------------------------
 -- CODING
@@ -218,4 +221,3 @@ local options = {
 -- Setup NvimTree
 vim.g.nvimtree_side = options.view.side
 require('nvim-tree').setup(options)
-
