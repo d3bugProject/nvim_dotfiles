@@ -1,7 +1,7 @@
 return {
   "xiyaowong/transparent.nvim",
   "nvimtools/none-ls.nvim",
-  "jose-elias-alvarez/null-ls.nvim",
+  --"jose-elias-alvarez/null-ls.nvim",
   "aca/emmet-ls",
   {
     "stevearc/conform.nvim",
@@ -101,7 +101,12 @@ return {
     branch = 'v2', -- optional but strongly recommended
   },
   { 'NvChad/nvim-colorizer.lua' },
-  { 'mrjones2014/nvim-ts-rainbow' },
+  {
+  "HiPhish/rainbow-delimiters.nvim", -- Remplace par ceci
+  config = function()
+    require("rainbow-delimiters.setup").setup()
+  end,
+},
   {
     "windwp/nvim-ts-autotag",
     config = function()

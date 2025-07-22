@@ -147,27 +147,27 @@ require("colorizer").setup {
   },
   buftypes = {},
 }
-local null_ls = require("null-ls")
-
-null_ls.setup({
-  on_attach = function(client, bufnr)
-    if client.supports_method("textDocument/formatting") then
-      vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
-      vim.api.nvim_create_autocmd("BufWritePre", {
-        group = augroup,
-        buffer = bufnr,
-        callback = function()
-          vim.lsp.buf.format()
-        end,
-      })
-    end
-  end,
-  sources = {
-    null_ls.builtins.formatting.prettier,
-    null_ls.builtins.diagnostics.eslint_d,
-    -- null_ls.builtins.completion.spell,
-  },
-})
+-- local null_ls = require("null-ls")
+--
+-- null_ls.setup({
+--   on_attach = function(client, bufnr)
+--     if client.supports_method("textDocument/formatting") then
+--       vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
+--       vim.api.nvim_create_autocmd("BufWritePre", {
+--         group = augroup,
+--         buffer = bufnr,
+--         callback = function()
+--           vim.lsp.buf.format()
+--         end,
+--       })
+--     end
+--   end,
+--   sources = {
+--     null_ls.builtins.formatting.prettier,
+--     null_ls.builtins.diagnostics.eslint_d,
+--     -- null_ls.builtins.completion.spell,
+--   },
+-- })
 
 require("luasnip.loaders.from_vscode").lazy_load()
 require("luasnip.loaders.from_vscode").lazy_load({ paths = { "./lua/snippets" } })

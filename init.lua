@@ -1,5 +1,9 @@
 -- config perso
 require "configs.autocmds"
+vim.fn.sign_define("NvimTreeDiagnosticErrorIcon", {text = "", texthl = "DiagnosticSignError"})
+vim.fn.sign_define("NvimTreeDiagnosticWarnIcon",  {text = "", texthl = "DiagnosticSignWarn"})
+vim.fn.sign_define("NvimTreeDiagnosticInfoIcon",  {text = "", texthl = "DiagnosticSignInfo"})
+vim.fn.sign_define("NvimTreeDiagnosticHintIcon",  {text = "", texthl = "DiagnosticSignHint"})
 vim.g.base46_cache = vim.fn.stdpath "data" .. "/base46/"
 vim.g.mapleader = " "
 vim.cmd([[autocmd FocusGained,BufEnter * checktime]])
@@ -36,5 +40,6 @@ require "nvchad.autocmds"
 vim.schedule(function()
   require "mappings"
 end)
+
 
 require("config")
