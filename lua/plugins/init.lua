@@ -1,24 +1,40 @@
 return {
   "xiyaowong/transparent.nvim",
   "nvimtools/none-ls.nvim",
-  --"jose-elias-alvarez/null-ls.nvim",
   "aca/emmet-ls",
   {
     "stevearc/conform.nvim",
-    -- event = 'BufWritePre', -- uncomment for format on save
-    optional = true,
-    opts = {
-      formatters_by_ft = {
-        ["typescript"] = { "eslint_d" },
-        ["javascript"] = { "eslint_d" },
+    event = 'BufWritePre', -- Activer avant la sauvegarde
+    cmd = { "ConformInfo" },
+    keys = {
+      {
+        "ff",
+        function()
+          require("conform").format({ async = true, lsp_fallback = true })
+        end,
+        mode = "",
+        desc = "Format buffer",
       },
-      require "configs.conform",
     },
+    opts = function()
+      return require "configs.conform"
+    end,
+    init = function()
+      -- Si tu veux format-on-save pour certains filetypes seulement
+      vim.o.formatexpr = "v:lua.require'conform'.formatexpr()"
+    end,
   },
   {
     "williamboman/mason.nvim",
     opts = {
       ensure_installed = {
+        -- Formatters
+        "prettier",
+        "stylua", 
+        "black",
+        "shfmt",
+        
+        -- Linters
         "eslint_d",
       },
     },
@@ -113,5 +129,6 @@ return {
       require("nvim-ts-autotag").setup()
     end,
   },
+  
 
 }

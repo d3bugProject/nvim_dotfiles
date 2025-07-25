@@ -2,6 +2,7 @@
 require "nvchad.mappings"
 local keymap = vim.keymap
 
+
 -----------------------------------------------------------
 -- BASIC SETTINGS
 -----------------------------------------------------------
@@ -76,15 +77,41 @@ keymap.set("n", "mmm", ":HopWord<cr>", { desc = "go directly to another word in 
 keymap.set('v', 'J', ":m '>+1<CR>gv=gv", { noremap = true, silent = true })
 keymap.set('v', 'K', ":m '<-2<CR>gv=gv", { noremap = true, silent = true })
 
--- Formatting
-keymap.set('n', "ff", "<cmd>lua vim.lsp.buf.format{async=true}<CR>", { desc = "format document" })
+-- Formatage amélioré avec Conform
+keymap.set({'n', 'v'}, "ff", function()
+  require("conform").format({
+    async = true,
+    lsp_fallback = true,
+    range = vim.fn.mode() == 'v' and {
+      start = vim.fn.getpos("'<"),
+      ['end'] = vim.fn.getpos("'>"),
+    } or nil,
+  })
+end, { desc = "Format document/selection" })
+
+-- Formatage LSP en fallback
+keymap.set('n', '<leader>lf', function()
+  vim.lsp.buf.format({ async = true })
+end, { desc = "LSP format" })
+
+-- Toggle format-on-save
+keymap.set('n', '<leader>tf', function()
+  vim.g.disable_autoformat = not vim.g.disable_autoformat
+  if vim.g.disable_autoformat then
+    print("Format-on-save disabled")
+  else
+    print("Format-on-save enabled")
+  end
+end, { desc = "Toggle format-on-save" })
 
 -- Comments
 keymap.set('n', 'gc', '<cmd>lua require("Comment.api").toggle.linewise.current()<CR>',
   { desc = "turn the line into comment" })
 keymap.set('v', 'gc', '<ESC><cmd>lua require("Comment.api").toggle.linewise(vim.fn.visualmode())<CR>',
   { desc = 'turn the block into comment' })
-
+-- nvim cmp toggle 
+keymap.set('n', '<F2>', ':ToggleCmp<CR>',
+  { desc = "toggle nvim cmp" })
 -----------------------------------------------------------
 -- NVIM-TREE
 -----------------------------------------------------------

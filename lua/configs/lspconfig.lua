@@ -149,11 +149,33 @@ cmp.setup {
   
   -- Configuration des mappings clavier
   mapping = {
-    -- Intégration avec Copilot - Priorité à Copilot sur Tab
+    -- Tab intelligent : LuaSnip en priorité, puis Copilot
     ['<Tab>'] = cmp.mapping(function(fallback)
-      local copilot_keys = vim.fn['copilot#Accept']("")
-      if copilot_keys ~= "" then
-        vim.api.nvim_feedkeys(copilot_keys, "i", true)
+      -- 1. Si LuaSnip est actif et peut sauter, on l'utilise
+      if luasnip.expand_or_jumpable() then
+        luasnip.expand_or_jump()
+      -- 2. Sinon, si cmp est visible, sélectionner le prochain item
+      elseif cmp.visible() then
+        cmp.select_next_item()
+      -- 3. Enfin, essayer Copilot
+      else
+        local copilot_keys = vim.fn['copilot#Accept']("")
+        if copilot_keys ~= "" then
+          vim.api.nvim_feedkeys(copilot_keys, "i", true)
+        else
+          fallback()
+        end
+      end
+    end, { 'i', 's' }),
+
+    -- Shift+Tab pour aller en arrière dans les snippets
+    ['<S-Tab>'] = cmp.mapping(function(fallback)
+      -- 1. Si LuaSnip peut sauter en arrière
+      if luasnip.jumpable(-1) then
+        luasnip.jump(-1)
+      -- 2. Sinon, si cmp est visible, sélectionner l'item précédent
+      elseif cmp.visible() then
+        cmp.select_prev_item()
       else
         fallback()
       end
@@ -175,25 +197,13 @@ cmp.setup {
       behavior = cmp.ConfirmBehavior.Replace,
       select = true,
     },
-    
-    -- Navigation dans les snippets avec Shift+Tab
-    ['<S-Tab>'] = cmp.mapping(function(fallback)
-      if cmp.visible() then
-        cmp.select_prev_item()
-      elseif luasnip.jumpable(-1) then
-        luasnip.jump(-1)
-      else
-        fallback()
-      end
-    end, { 'i', 's' }),
   },
   
   -- Sources d'auto-complétion par ordre de priorité
   sources = {
-    { name = "luasnip" },
+    { name = "luasnip", priority = 1000 },
     {
       name = "nvim_lsp",
-      -- Filtrer les snippets pour éviter les doublons
       entry_filter = function(entry, ctx)
         return require("cmp").lsp.CompletionItemKind.Snippet ~= entry:get_kind()
       end,
@@ -201,3 +211,4 @@ cmp.setup {
     { name = "path" },
   },
 }
+

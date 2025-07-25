@@ -147,28 +147,83 @@ require("colorizer").setup {
   },
   buftypes = {},
 }
--- local null_ls = require("null-ls")
---
--- null_ls.setup({
---   on_attach = function(client, bufnr)
---     if client.supports_method("textDocument/formatting") then
---       vim.api.nvim_clear_autocmds({ group = augroup, buffer = bufnr })
---       vim.api.nvim_create_autocmd("BufWritePre", {
---         group = augroup,
---         buffer = bufnr,
---         callback = function()
---           vim.lsp.buf.format()
---         end,
---       })
---     end
---   end,
---   sources = {
---     null_ls.builtins.formatting.prettier,
---     null_ls.builtins.diagnostics.eslint_d,
---     -- null_ls.builtins.completion.spell,
---   },
--- })
 
 require("luasnip.loaders.from_vscode").lazy_load()
-require("luasnip.loaders.from_vscode").lazy_load({ paths = { "./lua/snippets" } })
+require("luasnip.loaders.from_vscode").lazy_load({ paths = vim.g.lua_snippets_path })
 require("luasnip").filetype_extend("typescript", { "javascript" })
+
+-- Auto-import simple et fonctionnel pour useState
+vim.api.nvim_create_autocmd("User", {
+  pattern = "LuasnipInsertNodeEnter",
+  callback = function()
+    -- Vérifier si on vient d'utiliser le snippet useState
+    vim.defer_fn(function()
+      local current_line = vim.api.nvim_get_current_line()
+      if current_line:find("useState") then
+        local buf = vim.api.nvim_get_current_buf()
+        local lines = vim.api.nvim_buf_get_lines(buf, 0, 20, false)
+        local has_import = false
+        
+        -- Vérifier si l'import existe déjà
+        for _, line in ipairs(lines) do
+          if line:find("import.*useState") or line:find("import.*React.*useState") then
+            has_import = true
+            break
+          end
+        end
+        
+        -- Ajouter l'import si il n'existe pas
+        if not has_import then
+          -- Trouver où insérer l'import (après les autres imports)
+          local insert_line = 0
+          for i, line in ipairs(lines) do
+            if line:find("^import") then
+              insert_line = i
+            elseif line:match("^%s*$") == nil and not line:find("^import") then -- Remplace trim() par match
+              break
+            end
+          end
+          
+          vim.api.nvim_buf_set_lines(buf, insert_line, insert_line, false, {
+            "import React, { useState } from 'react';"
+          })
+        end
+      end
+    end, 100) -- Délai pour laisser le snippet s'insérer
+  end,
+})
+
+-- Variable globale pour suivre l'état de cmp
+vim.g.cmp_toggle_status = true
+
+-- Fonction pour activer/désactiver cmp
+function _G.toggle_cmp()
+  if vim.g.cmp_toggle_status then
+    -- Désactiver cmp
+    require('cmp').setup.buffer({ enabled = false })
+    vim.g.cmp_toggle_status = false
+    print("CMP désactivé")
+  else
+    -- Réactiver cmp
+    require('cmp').setup.buffer({ enabled = true })
+    vim.g.cmp_toggle_status = true
+    print("CMP activé")
+  end
+end
+
+-- Créer une commande utilisateur pour faciliter l'appel
+vim.api.nvim_create_user_command('ToggleCmp', function()
+  _G.toggle_cmp()
+end, {})
+
+-- Définir un raccourci clavier (par exemple <leader>tc pour Toggle Completion)
+-- Remplacez <leader> par votre touche leader (généralement espace ou \)
+vim.api.nvim_set_keymap('n', '<leader>tc', '<cmd>lua _G.toggle_cmp()<CR>', { noremap = true, silent = true })
+
+-- Debug : afficher les snippets chargés
+vim.api.nvim_create_autocmd("VimEnter", {
+  callback = function()
+    local ls = require("luasnip")
+    print("Snippets chargés:", vim.tbl_count(ls.get_snippets()))
+  end,
+})

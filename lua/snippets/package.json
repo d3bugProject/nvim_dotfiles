@@ -8,7 +8,13 @@
       {
         "language": "all",
         "path": "./perso.json"
+      },
+      {
+        "language": ["javascriptreact", "typescriptreact"],
+        "path": "./react.json"
       }
     ]
   }
 }
+
+  

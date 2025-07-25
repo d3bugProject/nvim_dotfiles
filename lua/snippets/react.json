@@ -1,0 +1,7 @@
+{
+  "var": {
+    "prefix": "var",
+    "body": ["const $1 = $2"],
+    "description": "une simple variable"
+  }
+}

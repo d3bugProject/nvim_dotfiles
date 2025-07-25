@@ -6,6 +6,7 @@ vim.fn.sign_define("NvimTreeDiagnosticInfoIcon",  {text = "", texthl = "Diagn
 vim.fn.sign_define("NvimTreeDiagnosticHintIcon",  {text = "", texthl = "DiagnosticSignHint"})
 vim.g.base46_cache = vim.fn.stdpath "data" .. "/base46/"
 vim.g.mapleader = " "
+vim.g.lua_snippets_path = vim.fn.stdpath "config" .. "/lua/snippets"
 vim.cmd([[autocmd FocusGained,BufEnter * checktime]])
 -- bootstrap lazy and all plugins
 local lazypath = vim.fn.stdpath "data" .. "/lazy/lazy.nvim"
